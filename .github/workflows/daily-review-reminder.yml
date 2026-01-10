@@ -1,0 +1,111 @@
+name: Daily Review Reminder
+
+on:
+  schedule:
+    # Runs at 6:00 AM IST (12:30 AM UTC) every day
+    # Adjust the cron expression for your timezone
+    - cron: '30 0 * * *'
+  
+  # Allows manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  send-reminder:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Check due reviews and prepare email
+        id: check-reviews
+        run: |
+          python << 'EOF'
+          import json
+          import os
+          from datetime import datetime
+          
+          # Load reviews data
+          reviews_file = 'stats/reviews.json'
+          
+          if not os.path.exists(reviews_file):
+              print("No reviews scheduled yet.")
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                  f.write("has_due=false\n")
+              exit(0)
+          
+          with open(reviews_file, 'r') as f:
+              data = json.load(f)
+          
+          today = datetime.now().strftime('%Y-%m-%d')
+          due_problems = []
+          
+          for problem_id, info in data.items():
+              next_review = info.get('next_review')
+              if next_review and next_review <= today:
+                  due_problems.append({
+                      'id': problem_id,
+                      'title': info.get('title', 'Unknown'),
+                      'review_count': info.get('review_count', 0),
+                      'next_review': next_review
+                  })
+          
+          if not due_problems:
+              print("No problems due for review today!")
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                  f.write("has_due=false\n")
+              exit(0)
+          
+          # Sort by due date
+          due_problems.sort(key=lambda x: x['next_review'])
+          
+          # Create email body
+          email_body = f"📚 LeetCode Daily Review Reminder\\n"
+          email_body += f"{'='*40}\\n\\n"
+          email_body += f"Date: {datetime.now().strftime('%B %d, %Y')}\\n"
+          email_body += f"Problems due: {len(due_problems)}\\n\\n"
+          email_body += f"{'─'*40}\\n\\n"
+          
+          for i, problem in enumerate(due_problems, 1):
+              email_body += f"{i}. #{problem['id']}: {problem['title']}\\n"
+              email_body += f"   Review #{problem['review_count'] + 1}\\n"
+              email_body += f"   Due: {problem['next_review']}\\n\\n"
+          
+          email_body += f"{'─'*40}\\n\\n"
+          email_body += "After reviewing, mark them complete:\\n"
+          email_body += "python scripts/schedule_review.py mark <problem_number>\\n\\n"
+          email_body += "Happy Coding! 🚀"
+          
+          # Save outputs
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write("has_due=true\n")
+              f.write(f"count={len(due_problems)}\n")
+          
+          # Save email body to file (to handle multiline)
+          with open('email_body.txt', 'w') as f:
+              f.write(email_body.replace('\\n', '\n'))
+          
+          print(f"Found {len(due_problems)} problems due for review!")
+          EOF
+      
+      - name: Send email notification
+        if: steps.check-reviews.outputs.has_due == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "📚 LeetCode Review: ${{ steps.check-reviews.outputs.count }} problem(s) due today!"
+          body: file://email_body.txt
+          to: ${{ secrets.EMAIL_TO }}
+          from: LeetCode Review Bot <${{ secrets.EMAIL_USERNAME }}>
+      
+      - name: No reviews due
+        if: steps.check-reviews.outputs.has_due == 'false'
+        run: echo "✅ No problems due for review today!"

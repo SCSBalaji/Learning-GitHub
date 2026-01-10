@@ -6,9 +6,9 @@ My personal collection of LeetCode problem solutions in **Java** with multiple a
 
 | Difficulty | Solved | Total | Percentage |
 |------------|--------|-------|------------|
-| 🟢 Easy    | 1    | 700   | 0.1%      |
-| 🟡 Medium  | 0     | 1500  | 0.0%       |
-| 🔴 Hard    | 1     | 600   | 0.2%       |
+| 🟢 Easy    | 1    | 921   | 0.1%      |
+| 🟡 Medium  | 0     | 1982  | 0.0%       |
+| 🔴 Hard    | 1     | 899   | 0.2%       |
 | **Total**  | **2**| **2800** | **0.1%** |
 
 **Last Updated:** January 10, 2026
@@ -69,7 +69,7 @@ python scripts/update_stats.py
 
 ### Add a new solution:
 ```bash
-python scripts/add_solution.py <problem-number> "<approach-name>"
+python scripts/add_solution.py <problem-number> "<approach-name>" "<Acceptance>"
 ```
 
 ### Compile and run a solution:
@@ -90,10 +90,9 @@ java -cp "1. easy/0000-0500/0001-two-sum" Solution1
 2. **Each problem folder contains:**
    - `README.md` - Problem statement and all solutions
    - `Solution1.java`, `Solution2.java` - Java implementation files
-   - `notes.md` - Personal insights (optional)
 
 3. **Multiple solutions per problem:**
-   - Optimal solution (marked with ⭐)
+   - Optimal solution
    - Alternative approaches
    - Brute force (for learning)
 
@@ -118,8 +117,8 @@ java -cp "1. easy/0000-0500/0001-two-sum" Solution1
 
 ---
 
-**Author:** Your Name  
-**Started:** January 1, 2025  
+**Author:** Chaitanya Satya Balaji Sangineedi 
+**Started:** January 10, 2025  
 **Language:** Java ☕
 
 ---
