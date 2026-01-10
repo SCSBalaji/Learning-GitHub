@@ -33,17 +33,14 @@ leetcode-solutions/
 
 | # | Title | Difficulty | Solutions | Date |
 |---|-------|------------|-----------|------|
-| 1 | [Two Sum](1. easy/0000-0500/0001-two-sum) | 🟢 Easy | 2 Java | January 10, 2026 |
+| 1 | [Palindrome Number](1. easy/0000-0500/0009-palindrome-number) | 🟢 Easy | 1 Java | January 10, 2026 |
 
 
 ---
 
 ## 📚 Problems by Topic (Top 10)
 
-### Array (1)
-- Easy: 1 | Medium: 0 | Hard: 0
-
-### Hash Table (1)
+### Math (1)
 - Easy: 1 | Medium: 0 | Hard: 0
 
 

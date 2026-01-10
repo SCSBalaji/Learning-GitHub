@@ -1,0 +1,33 @@
+{
+  "easy": {
+    "count": 1,
+    "problems": [
+      {
+        "number": "0009",
+        "title": "Palindrome Number",
+        "difficulty": "easy",
+        "path": "1. easy/0000-0500/0009-palindrome-number",
+        "date": "January 10, 2026",
+        "solutions": 1
+      }
+    ]
+  },
+  "medium": {
+    "count": 0,
+    "problems": []
+  },
+  "hard": {
+    "count": 0,
+    "problems": []
+  },
+  "topics": {
+    "Math": {
+      "easy": 1,
+      "medium": 0,
+      "hard": 0
+    }
+  },
+  "companies": {},
+  "language": "Java",
+  "last_updated": "2026-01-10T13:20:32.232408"
+}
