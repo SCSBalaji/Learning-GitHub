@@ -8,8 +8,8 @@ My personal collection of LeetCode problem solutions in **Java** with multiple a
 |------------|--------|-------|------------|
 | 🟢 Easy    | 1    | 700   | 0.1%      |
 | 🟡 Medium  | 0     | 1500  | 0.0%       |
-| 🔴 Hard    | 0     | 600   | 0.0%       |
-| **Total**  | **1**| **2800** | **0.0%** |
+| 🔴 Hard    | 1     | 600   | 0.2%       |
+| **Total**  | **2**| **2800** | **0.1%** |
 
 **Last Updated:** January 10, 2026
 
@@ -34,6 +34,7 @@ leetcode-solutions/
 | # | Title | Difficulty | Solutions | Date |
 |---|-------|------------|-----------|------|
 | 1 | [Palindrome Number](1. easy/0000-0500/0009-palindrome-number) | 🟢 Easy | 1 Java | January 10, 2026 |
+| 2 | [Max Dot Product of Two Subsequences](3. hard/1001-1500/1458-max-dot-product-of-two-subsequences) | 🔴 Hard | 1 Java | January 10, 2026 |
 
 
 ---
@@ -42,6 +43,12 @@ leetcode-solutions/
 
 ### Math (1)
 - Easy: 1 | Medium: 0 | Hard: 0
+
+### Array (1)
+- Easy: 0 | Medium: 0 | Hard: 1
+
+### Dynamic Programming (1)
+- Easy: 0 | Medium: 0 | Hard: 1
 
 
 [See complete topic breakdown →](stats/topics.md)
