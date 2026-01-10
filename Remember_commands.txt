@@ -1,0 +1,73 @@
+Create a New Problem
+# Create a new easy problem
+python scripts/create_problem.py 9 "Palindrome Number" easy "Math"
+
+# Create a medium problem
+python scripts/create_problem.py 3 "Longest Substring Without Repeating Characters" medium "Hash Table,String,Sliding Window"
+
+# Create a hard problem
+python scripts/create_problem.py 4 "Median of Two Sorted Arrays" hard "Array,Binary Search,Divide and Conquer"
+
+
+
+
+2. Add a New Solution to Existing Problem
+# Add brute force (TLE) Time Limit Exceed
+python scripts/add_solution.py 42 "brute-force" TLE
+
+# Add brute force (MLE) Memory Limit Exceed
+python scripts/add_solution.py 42 "brute-force" MLE
+
+# Add brute force (Accepted)
+python scripts/add_solution.py 42 "brute-force" Accepted
+
+# Add optimal solution
+python scripts/add_solution.py 42 "two-pointers" Accepted
+
+# Add a hash-map solution (WA) Wrong Answer
+python scripts/add_solution.py 1 "hash-map" WA
+
+
+
+
+3. Update Statistics
+python scripts/update_stats.py
+
+
+
+
+4. Batch Operations
+# List all solved problems
+python scripts/batch_operations.py list
+
+# Quick stats
+python scripts/batch_operations.py stats
+
+# Search for a problem
+python scripts/batch_operations.py find "two-sum"
+
+
+
+
+5. Spaced Repetition Review System
+# Show problems due for review today
+python scripts/schedule_review.py due
+
+# Show complete review schedule
+python scripts/schedule_review.py schedule
+
+# Mark problem #1 as reviewed
+python scripts/schedule_review.py mark 1
+
+
+
+
+6. Git Commit Helper
+# Add a new solution commit
+python scripts/commit_helper.py 1 Add "Hash map solution"
+
+# Optimize existing solution
+python scripts/commit_helper.py 1 Optimize "Reduced space complexity"
+
+# Update documentation
+python scripts/commit_helper.py 1 Docs "Added detailed explanation"
