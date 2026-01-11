@@ -100,33 +100,33 @@ jobs:
                   urgency = "Every expert was once a beginner."
               
               message = f"""🔔 *LeetCode Daily Reminder*
-{'═'*45}
-
-Hey! You haven't solved any problem today.
-
-{streak_msg}
-
-📊 *Your Stats:*
-{'─'*45}
-• Current Streak: *{current_streak} days*
-• Total Solved: *{total_problems} problems*
-• Date: {datetime.now().strftime('%B %d, %Y')}
-{'─'*45}
-
-💡 _{urgency}_
-
-*Quick Tips:*
-• Start with an Easy problem if short on time
-• Even 1 problem a day = 365 problems a year!
-• Consistency beats intensity
-
-🚀 *Commands to get started:*
-{'─'*45}
-`python scripts/create_problem.py <num> "<title>" <diff> "<topics>"`
-`python scripts/batch_operations.py stats`
-
-Keep grinding! 💪
-"""
+          {'═'*45}
+          
+          Hey! You haven't solved any problem today.
+          
+          {streak_msg}
+          
+          📊 *Your Stats:*
+          {'─'*45}
+          • Current Streak: *{current_streak} days*
+          • Total Solved: *{total_problems} problems*
+          • Date: {datetime.now().strftime('%B %d, %Y')}
+          {'─'*45}
+          
+          💡 _{urgency}_
+          
+          *Quick Tips:*
+          • Start with an Easy problem if short on time
+          • Even 1 problem a day = 365 problems a year!
+          • Consistency beats intensity
+          
+          🚀 *Commands to get started:*
+          {'─'*45}
+          `python scripts/create_problem.py <num> "<title>" <diff> "<topics>"`
+          `python scripts/batch_operations.py stats`
+          
+          Keep grinding! 💪
+          """
               
               with open('reminder_telegram.txt', 'w', encoding='utf-8') as f:
                   f.write(message)
