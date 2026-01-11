@@ -1,0 +1,104 @@
+name: Telegram Review Reminder
+
+on:
+  schedule:
+    # Runs at 6:00 AM IST (12:30 AM UTC) every day
+    - cron: '30 0 * * *'
+  
+  workflow_dispatch:
+
+jobs:
+  send-telegram-reminder:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Check due reviews and prepare message
+        id: check-reviews
+        run: |
+          python << 'EOF'
+          import json
+          import os
+          from datetime import datetime
+          
+          # Load reviews data
+          reviews_file = 'stats/reviews.json'
+          
+          if not os.path.exists(reviews_file):
+              print("No reviews scheduled yet.")
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                  f.write("has_due=false\n")
+              exit(0)
+          
+          with open(reviews_file, 'r') as f:
+              data = json.load(f)
+          
+          today = datetime.now().strftime('%Y-%m-%d')
+          due_problems = []
+          
+          for problem_id, info in data.items():
+              next_review = info.get('next_review')
+              if next_review and next_review <= today:
+                  due_problems.append({
+                      'id': problem_id,
+                      'title': info.get('title', 'Unknown'),
+                      'review_count': info.get('review_count', 0),
+                      'next_review': next_review
+                  })
+          
+          if not due_problems:
+              print("No problems due for review today!")
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                  f.write("has_due=false\n")
+              exit(0)
+          
+          # Sort by due date
+          due_problems.sort(key=lambda x: x['next_review'])
+          
+          # Create Telegram message (with Markdown formatting)
+          message = f"📚 *LeetCode Daily Review Reminder*\n"
+          message += f"{'═'*40}\n\n"
+          message += f"📅 Date: {datetime.now().strftime('%B %d, %Y')}\n"
+          message += f"📊 Problems due: *{len(due_problems)}*\n\n"
+          message += f"{'─'*40}\n\n"
+          
+          for i, problem in enumerate(due_problems, 1):
+              message += f"{i}. *#{problem['id']}: {problem['title']}*\n"
+              message += f"   Review #{problem['review_count'] + 1}\n"
+              message += f"   Due: {problem['next_review']}\n\n"
+          
+          message += f"{'─'*40}\n\n"
+          message += "After reviewing, mark them complete:\n"
+          message += "`python scripts/schedule_review.py mark <problem_number>`\n\n"
+          message += "Happy Coding! 🚀"
+          
+          # Save outputs
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write("has_due=true\n")
+              f.write(f"count={len(due_problems)}\n")
+          
+          # Save message to file
+          with open('telegram_message.txt', 'w', encoding='utf-8') as f:
+              f.write(message)
+          
+          print(f"Found {len(due_problems)} problems due for review!")
+          EOF
+      
+      - name: Send Telegram notification
+        if: steps.check-reviews.outputs.has_due == 'true'
+        run: |
+          MESSAGE=$(cat telegram_message.txt)
+          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -H "Content-Type: application/json" \
+            -d "{\"chat_id\": \"${{ secrets.TELEGRAM_CHAT_ID }}\", \"text\": \"$MESSAGE\", \"parse_mode\": \"Markdown\"}"
+      
+      - name: No reviews due
+        if: steps.check-reviews.outputs.has_due == 'false'
+        run: echo "✅ No problems due for review today!"

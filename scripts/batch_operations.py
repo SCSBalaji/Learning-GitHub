@@ -1,5 +1,7 @@
 import os
 import sys
+import subprocess
+from datetime import datetime, timedelta
 
 def list_all_solutions():
     """List all Java solution files in the repository."""
@@ -109,12 +111,69 @@ def find_problem(query):
         print(f"  {r['difficulty']}: {r['folder']}")
         print(f"  Path: {r['path']}\n")
 
+def show_streak():
+    """Show current solving streak."""
+    try:
+        def get_commits_on_date(date_str):
+            cmd = f'git log --oneline --after="{date_str} 00:00" --before="{date_str} 23:59" -- "1. easy/" "2. medium/" "3. hard/"'
+            result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+            commits = [c for c in result.stdout.strip().split('\n') if c]
+            return commits
+        
+        # Check today
+        today = datetime.now()
+        today_str = today.strftime('%Y-%m-%d')
+        today_commits = get_commits_on_date(today_str)
+        
+        # Calculate streak
+        streak = 0
+        check_date = today if today_commits else today - timedelta(days=1)
+        
+        while True:
+            date_str = check_date.strftime('%Y-%m-%d')
+            commits = get_commits_on_date(date_str)
+            
+            if commits:
+                streak += 1
+                check_date -= timedelta(days=1)
+            else:
+                break
+            
+            if streak > 365:
+                break
+        
+        print("\n🔥 Streak Status")
+        print("=" * 30)
+        
+        if today_commits:
+            print(f"✅ Today: {len(today_commits)} commit(s)")
+        else:
+            print("⚠️  Today: No commits yet!")
+        
+        print(f"🔥 Current Streak: {streak} days")
+        
+        if streak == 0:
+            print("\n💡 Start your streak today!")
+        elif streak < 7:
+            print(f"\n💪 Keep going! {7 - streak} more days to 1 week!")
+        elif streak < 30:
+            print(f"\n🚀 Great progress! {30 - streak} more days to 1 month!")
+        elif streak < 100:
+            print(f"\n⭐ Amazing! {100 - streak} more days to 100!")
+        else:
+            print(f"\n🏆 Legendary! {streak} day streak!")
+        
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        print("Make sure you're in a git repository.")
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Commands:")
         print("  python batch_operations.py list       - List all problems and solutions")
         print("  python batch_operations.py stats      - Show quick statistics")
         print("  python batch_operations.py find <q>   - Search for a problem")
+        print("  python batch_operations.py streak     - Show current streak")
         sys.exit(1)
     
     command = sys.argv[1]
@@ -125,5 +184,7 @@ if __name__ == "__main__":
         show_stats()
     elif command == "find" and len(sys.argv) > 2:
         find_problem(sys.argv[2])
+    elif command == "streak":
+        show_streak()
     else:
         print(f"Unknown command: {command}")
