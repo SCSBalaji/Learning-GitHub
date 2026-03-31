@@ -1,126 +1,24 @@
-# 🚀 LeetCode Solutions (Java)
+chmod +x download.sh
 
-My personal collection of LeetCode problem solutions in **Java** with multiple approaches and detailed explanations.
-
-## 📊 Progress Statistics
-
-| Difficulty | Solved | Total | Percentage |
-|------------|--------|-------|------------|
-| 🟢 Easy    | 1    | 921   | 0.1%      |
-| 🟡 Medium  | 0     | 1982  | 0.0%       |
-| 🔴 Hard    | 1     | 899   | 0.2%       |
-| **Total**  | **2**| **2800** | **0.1%** |
-
-**Last Updated:** January 10, 2026
-
----
-
-## 📁 Repository Structure
-
-```
-leetcode-solutions/
-├── 1. easy/        # Easy problems organized by number ranges
-├── 2. medium/      # Medium problems organized by number ranges
-├── 3. hard/        # Hard problems organized by number ranges
-├── resources/      # Patterns, algorithms, data structures guides
-├── scripts/        # Automation scripts
-└── stats/          # Progress tracking and topic-wise statistics
-```
-
----
-
-## 🔥 Recently Solved
-
-| # | Title | Difficulty | Solutions | Date |
-|---|-------|------------|-----------|------|
-| 1 | [Palindrome Number](1. easy/0000-0500/0009-palindrome-number) | 🟢 Easy | 1 Java | January 10, 2026 |
-| 2 | [Max Dot Product of Two Subsequences](3. hard/1001-1500/1458-max-dot-product-of-two-subsequences) | 🔴 Hard | 1 Java | January 10, 2026 |
+chmod +x upload_videos.sh
 
 
----
 
-## 📚 Problems by Topic (Top 10)
+./download.sh
 
-### Math (1)
-- Easy: 1 | Medium: 0 | Hard: 0
-
-### Array (1)
-- Easy: 0 | Medium: 0 | Hard: 1
-
-### Dynamic Programming (1)
-- Easy: 0 | Medium: 0 | Hard: 1
+./upload_videos.sh
 
 
-[See complete topic breakdown →](stats/topics.md)
 
----
+ffmpeg -i "https://fast.wistia.com/embed/medias/a94t2ivslh.m3u8" -c copy video.mp4
 
-## 🎯 Quick Start
 
-### Create a new problem:
-```bash
-python scripts/create_problem.py <number> "<title>" <difficulty> "<topics>" "<companies>"
-```
+rclone copy video_1.mp4 gdrive:videos \
+--transfers 4 \
+--drive-chunk-size 64M \
+--fast-list \
+--progress
 
-### Update statistics:
-```bash
-python scripts/update_stats.py
-```
 
-### Add a new solution:
-```bash
-python scripts/add_solution.py <problem-number> "<approach-name>" "<Acceptance>"
-```
-
-### Compile and run a solution:
-```bash
-javac "1. easy/0000-0500/0001-two-sum/Solution1.java"
-java -cp "1. easy/0000-0500/0001-two-sum" Solution1
-```
-
----
-
-## 🛠️ How to Use
-
-1. **Navigate by difficulty and number range**
-   ```
-   1. easy/0000-0500/0001-two-sum/
-   ```
-
-2. **Each problem folder contains:**
-   - `README.md` - Problem statement and all solutions
-   - `Solution1.java`, `Solution2.java` - Java implementation files
-
-3. **Multiple solutions per problem:**
-   - Optimal solution
-   - Alternative approaches
-   - Brute force (for learning)
-
----
-
-## 📖 Naming Conventions
-
-- **Problem folders:** `0001-problem-name`
-- **Solution files:** `Solution1.java`, `Solution2.java`, etc.
-- **Always use:** 4-digit numbers, kebab-case, lowercase for folders
-
----
-
-## 📝 Git Commit Convention
-
-```bash
-[Add] #0001: Two Sum - Hash map solution
-[Optimize] #0042: Improved space complexity
-[Update] #0015: Added two pointers approach
-[Docs] Updated README with stats
-```
-
----
-
-**Author:** Chaitanya Satya Balaji Sangineedi 
-**Started:** January 10, 2025  
-**Language:** Java ☕
-
----
-
-*This repository is automatically updated using automation scripts.*
+whisper video_5.mp4 --model small --fp16 False --language English
+// English only. It is translating it
